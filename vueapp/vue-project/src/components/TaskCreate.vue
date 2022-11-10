@@ -11,7 +11,9 @@ import $ from 'jquery'
             </div>
             <div>
                 <p>Description:</p>
-                <input class="descriptionField" v-model="form.descriptionField" placeholder="Description"/>
+                <textarea rows = "5" cols = "60" name = "descriptionField" v-model="form.descriptionField">
+                    Enter details here...
+                </textarea><br>
             </div>
             <div class="form-group">
                     <button class="btn btn-primary">Submit</button>
@@ -52,6 +54,7 @@ export default {
     }
     .descriptionField{
         width: 300px;
+        height: 60px;
     }
     .createTask-form div{
         padding: 5px
