@@ -14,7 +14,7 @@ import $ from 'jquery'
                 <input class="descriptionField" v-model="form.descriptionField" placeholder="Description"/>
             </div>
             <div class="form-group">
-                    <button class="btn btn-primary">Submit</button>
+                <button class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>

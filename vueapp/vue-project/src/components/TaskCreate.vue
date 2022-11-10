@@ -11,10 +11,12 @@ import $ from 'jquery'
             </div>
             <div>
                 <p>Description:</p>
-                <input class="descriptionField" v-model="form.descriptionField" placeholder="Description"/>
+                <textarea rows = "5" cols = "60" name="descriptionField" v-model="form.descriptionField">
+                    Enter details here...
+                </textarea><br>
             </div>
             <div class="form-group">
-                    <button class="btn btn-primary">Submit</button>
+                <button class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>
@@ -50,9 +52,7 @@ export default {
         display: flex;
         background-color: rgb(68, 68, 68);
     }
-    .descriptionField{
-        width: 300px;
-    }
+
     .createTask-form div{
         padding: 5px
     }
