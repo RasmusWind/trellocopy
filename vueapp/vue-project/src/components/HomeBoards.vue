@@ -91,8 +91,8 @@ export default {
     .draggable-div{
         border-radius: 10px;
         background-color: rgb(34, 144, 247);
-        margin: 1rem;
-        width: calc(25% - 2rem);
+        margin: 3rem;
+        width: calc(25% - 6rem);
         flex: 0 0 auto;
         height:0%;
     }    
