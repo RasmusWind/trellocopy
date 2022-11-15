@@ -29,6 +29,7 @@ export default {
         padding: 1rem;
         margin: 1rem;
         background-color: darkgray;
+        border-radius: 5px;
     }
     .TodoItemIsComplete-div{
         width: 30%
