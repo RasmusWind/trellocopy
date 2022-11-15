@@ -3,3 +3,24 @@ body{
     margin: 0px;
     background-color: rgb(112, 112, 112);
 }
+
+/* Scroll bar stylings */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--lightestgrey); 
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

@@ -24,6 +24,7 @@ export default {
 <style scoped>
     .ListItem-div{
         width: 100%;
+        max-width: 300px;
         background-color: orange;
         border-radius: 5px;
         height: 2rem;
@@ -32,6 +33,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 0 auto;
     }
     .ListItem-div:not(:last-child){
         margin-bottom: 1rem;

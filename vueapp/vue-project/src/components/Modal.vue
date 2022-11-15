@@ -1,3 +1,8 @@
+<script setup>
+import TodoItem from './TodoItem.vue'
+
+</script>
+
 <template>
   <Transition name="modal">
     <div v-if="show" class="modal-mask">
@@ -13,10 +18,10 @@
 
           <div class="modal-body">
             <div class="TodoList-div">
-
+                <TodoItem v-for="item in todos" :Name="item.name" :IsComplete="item.isComplete"/>
             </div>
             <div class="ToolsList-div">
-
+                
             </div>
           </div>
 
@@ -27,16 +32,36 @@
     </div>
   </Transition>
 </template>
-<script>
+
+<script >
 
 export default {
   props: {
     show: Boolean,
     itemID: String
+  },
+  data(){
+    return{
+      todos: [
+        {name: "Make coffee", isComplete: false},
+        {name: "Code css", isComplete: false},
+        {name: "Make design", isComplete: true},
+        {name: "Code backend", isComplete: true},
+        {name: "Go home", isComplete: false},
+        {name: "Talk games", isComplete: true},
+      ],
+      teams: [
+        {name: "Backend Developers", Workers: [
+          {firstName: "Lars"},
+          {firstName: "Jonas"},
+          {firstName: "Japa"},
+        ]}
+      ]
+    }
   }
 }
-
 </script>
+
 <style>
     .TodoList-div{
         background-color: rgb(34, 144, 247);
