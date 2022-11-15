@@ -1,51 +1,54 @@
 <script setup>
 import Modal from './Modal.vue'
-import TaskListItem from './TaskListItem.vue'
-import BoardItem from './BoardItem.vue'
+import TaskListItem from './TaskListItem.vue';
 import $ from 'jquery'
 </script>
 
-<template>
-    <div class="HomeBoardList-div">
-        <BoardItem v-for="board in boarddata" v-bind:key="board" :board_name="board.fields.name" :task_list="board.fields.tasks"/>
-    </div>  
-  </template>
+<template lang="">
+    <div class="draggable-div">
+        <h1>{{board_name}}</h1> 
+        <draggable class="draggable" ghost-class="ghost-cls" :list="task_list" group="tasks"  item-key="id">
+            <TaskListItem v-for="item in task_list" :Name="item.fields.name" :Id="item.pk" @click="ShowModal" @dragend="EndDragging"></TaskListItem>
+        </draggable>
+    </div>
+    <Teleport to="body">
+      <!-- use the modal component, pass in the prop -->
+      <modal :show="showModal" :itemID="itemID" @close="showModal = false">
+        <template #header>
+        </template>
+      </modal>
+    </Teleport>
+</template>
+
 <script>
 import { VueDraggableNext } from "vue-draggable-next"
-import get_all_boards_data from "../assets/js/geteverything.js"
-import post_boards from "../assets/js/post_delay.js"
-var post_timeout = null
 
 export default {
-    
+    props:{
+        board_name: String,
+        task_list: Array,
+    },
+    data(){
+        return {
+            task: this.task_list,
+            showModal: false,
+        }
+    },
     components: {
         Modal,
         draggable: VueDraggableNext,
-    },
-    data() {
-        return {
-            showModal: false,
-            drag: false,
-            boarddata:[
-
-            ],
-        }
     },
     methods: {
         ShowModal: function(e){
             this.showModal = true;
             this.itemID = e.target.id;
             console.log(e.target)
+        },
+        EndDragging: function(e){
+            this.emitter.emit("nielsevent", "wallah")
+            console.log("STOPPED DRAGGING")
         }
     },
-    mounted: function(){
-        this.boarddata = get_all_boards_data()
-        this.emitter.on("nielsevent", (msg)=>{
-            console.log(this.boarddata)
-            // Call delayed post function here!
-            post_timeout = post_boards(this.boarddata, post_timeout)
-        })
-    }
 }
 </script>
 <style scoped>

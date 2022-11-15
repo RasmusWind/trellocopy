@@ -55,29 +55,32 @@ def post_board_add_task(request, pk):
 
 @api_view(['POST'])
 def post_all_boards(request):
-    boards_list = request.data.get("data_list", [])
 
-    board_ids = [board["boardid"] for board in boards_list]
+    boards_list = json.loads(request.data.get("data_list", []))
+
+    board_ids = [board["pk"] for board in boards_list]
     boards = Board.objects.filter(pk__in=board_ids)
 
     for board, json_board in zip(boards, boards_list):
         Task.objects.filter(board__pk=board.pk).update(board=None, position=0)
-        tasks = Task.objects.filter(pk__in=[task["taskid"] for task in json_board["tasks"]]).order_by("pk")
-        tasks_json = sorted(json_board["tasks"], key=lambda x: x["taskid"])
+        task_pks = [task["pk"] for task in json_board["fields"]["tasks"]] if json_board["fields"]["tasks"] else []
+        tasks = Task.objects.filter(pk__in=task_pks).order_by("pk")
+        tasks_json = sorted(json_board["fields"]["tasks"], key=lambda x: x["pk"])
         
         for task, json_task in zip(tasks, tasks_json):
-            if task.pk == int(json_task["taskid"]):
-                task.position = int(json_task["position"])
+            if task.pk == int(json_task["pk"]):
+                task.position = int(json_task["fields"]["position"])
                 task.board = board
                 task.save()
 
                 Todo.objects.filter(task__pk=task.pk).update(task=None, position=0)
-                todos = Todo.objects.filter(pk__in=[todo["todoid"] for todo in task["todos"]]).order_by("pk")
-                todos_json = sorted(task["todos"], key=lambda x: x["todoid"])
+                todo_pks = [todo["pk"] for todo in json_task["fields"]["todos"]] if json_task["fields"]["todos"] else []
+                todos = Todo.objects.filter(pk__in=todo_pks).order_by("pk")
+                todos_json = sorted(json_task["fields"]["todos"], key=lambda x: x["pk"])
 
                 for todo, json_todo in zip(todos, todos_json):
-                    if todo.pk == int(json_todo["todoid"]):
-                        todo.position = int(json_todo["position"])
+                    if todo.pk == int(json_todo["pk"]):
+                        todo.position = int(json_todo["fields"]["position"])
                         todo.task = task
                         todo.save()
 
