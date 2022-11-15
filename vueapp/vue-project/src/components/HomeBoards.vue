@@ -1,6 +1,7 @@
 <script setup>
 import Modal from './Modal.vue'
 import TaskListItem from './TaskListItem.vue';
+import $ from 'jquery'
 </script>
 
 <template>

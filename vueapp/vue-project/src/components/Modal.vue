@@ -1,6 +1,6 @@
 <script setup>
 import TodoItem from './TodoItem.vue'
-
+import vSelect from 'vue-select'
 </script>
 
 <template>
@@ -21,7 +21,10 @@ import TodoItem from './TodoItem.vue'
                 <TodoItem v-for="item in todos" :Name="item.name" :IsComplete="item.isComplete"/>
             </div>
             <div class="ToolsList-div">
-                
+              <div>
+                <p>Select a Team</p>
+                <v-select class="createrWorker-vSelect" @change="AddWorker" v-model="testString" :reduce="(option) => option.id" :options="test" />
+            </div>
             </div>
           </div>
 
@@ -38,7 +41,8 @@ import TodoItem from './TodoItem.vue'
 export default {
   props: {
     show: Boolean,
-    itemID: String
+    itemID: String,
+    testString: String
   },
   data(){
     return{
@@ -56,7 +60,19 @@ export default {
           {firstName: "Jonas"},
           {firstName: "Japa"},
         ]}
+      ],
+      test: [
+        {label: "yep", id: 1},
+        {label: "nop", id: 2}
       ]
+    }
+  },
+  components: {
+    vSelect
+  },
+  methods:{
+    AddWorker(){
+      console.log(this)
     }
   }
 }
