@@ -1,9 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from api.serializers import BoardSerializer
-from base.models import Board, Task
+from base.models import Board, Task, Todo
 from django.db import models
 from django.db.models import Q
+from django.core.serializers import serialize as ss
+import json
 
 @api_view(["GET"])
 def get_board_list(request):
@@ -69,4 +71,33 @@ def post_all_boards(request):
                 task.board = board
                 task.save()
 
+                Todo.objects.filter(task__pk=task.pk).update(task=None, position=0)
+                todos = Todo.objects.filter(pk__in=[todo["todoid"] for todo in task["todos"]]).order_by("pk")
+                todos_json = sorted(task["todos"], key=lambda x: x["todoid"])
+
+                for todo, json_todo in zip(todos, todos_json):
+                    if todo.pk == int(json_todo["todoid"]):
+                        todo.position = int(json_todo["position"])
+                        todo.task = task
+                        todo.save()
+
     return Response()
+
+@api_view(['POST'])
+def get_all_boards(request):
+    boards = Board.objects.all().prefetch_related(models.Prefetch("tasks", Task.objects.prefetch_related(models.Prefetch("todos", to_attr="pre_todos")), to_attr="pre_tasks"))
+    json_boards = json.loads(ss("json", boards))
+
+    for board, json_board in zip(boards, json_boards):
+        tasks = board.pre_tasks
+        json_tasks = json.loads(ss("json", tasks))
+
+        json_board["fields"]["tasks"] = json_tasks
+
+        for task, json_task in zip(tasks, json_tasks):
+            todos = task.pre_todos
+            json_todos = json.loads(ss("json", todos))
+
+            json_task["fields"]["todos"] = json_todos
+    
+    return Response(json_boards)
