@@ -6,18 +6,24 @@ from drf_yasg import openapi
 from .endpoints import board, task, team, todo, worker
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Trello API",
-      default_version='v1',
-   ),
-   public=True,
-   permission_classes=[permissions.AllowAny],
+    openapi.Info(
+        title="Trello API",
+        default_version='v1',
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
 )
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    path('board-list/', task.get_task_list),
+    path('board-detail/<str:pk>/', task.get_task_detail),
+    path('board-create/', task.post_task_create),
+    path('board-update/<str:pk>', task.post_task_update),
+    path('board-delete/<str:pk>', task.delete_task_delete),
 
     path('task-list/', task.get_task_list),
     path('task-detail/<str:pk>/', task.get_task_detail),
@@ -45,4 +51,5 @@ urlpatterns = [
 
     path("postallboards/", board.post_all_boards),
     path("posttaskaddteam/<str:pk>/", task.post_task_add_team),
+    path("geteverything/", board.get_all_boards)
 ]
