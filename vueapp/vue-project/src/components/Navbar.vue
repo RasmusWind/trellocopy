@@ -17,14 +17,15 @@ export default {
 <style scoped>
     .navbar{
         top: 0;
-        width: 100%;
-        background-color: rgb(34, 144, 247);
+        width: calc(100% - 2rem);
+        background-color: #457b9d;
         height: 3.5rem;
         display: flex;
         flex-direction: row;
         align-items: center;
         box-shadow: 0 15px 30px 0 rgb(0 0 0 / 11%), 0 5px 15px 0 rgb(0 0 0 / 8%);
         margin-bottom: 2rem;
+        padding: 0px 1rem;
     }
     .navbar-h1{
         font-family: sans-serif;

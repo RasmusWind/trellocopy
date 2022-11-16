@@ -28,8 +28,9 @@ export default {
         flex-direction: row;
         padding: 1rem;
         margin: 1rem;
-        background-color: darkgray;
+        background-color: #1d3557;
         border-radius: 5px;
+        box-shadow: 0 15px 30px 0 rgb(0 0 0 / 11%), 0 5px 15px 0 rgb(0 0 0 / 8%);
     }
     .TodoItemIsComplete-div{
         width: 30%

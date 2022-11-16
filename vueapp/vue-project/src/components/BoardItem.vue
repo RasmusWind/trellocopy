@@ -2,18 +2,19 @@
 import Modal from './Modal.vue'
 import TaskListItem from './TaskListItem.vue';
 import $ from 'jquery'
+import {toRaw} from 'vue'
 </script>
 
 <template lang="">
     <div class="draggable-div">
         <h1>{{board_name}}</h1> 
         <draggable class="draggable" ghost-class="ghost-cls" :list="task_list" group="tasks"  item-key="id">
-            <TaskListItem v-for="item in task_list" :Name="item.fields.name" :Id="item.pk" @click="ShowModal" @dragend="EndDragging"></TaskListItem>
+            <TaskListItem v-for="item in task_list" :Name="item.fields.name" :Id="/* item.fields.board+'-'+ */item.pk" @click="ShowModal" @dragend="EndDragging"></TaskListItem>
         </draggable>
     </div>
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <modal :show="showModal" :itemID="itemID" @close="showModal = false">
+      <modal :show="showModal" :Task="Task" @close="showModal = false">
         <template #header>
         </template>
       </modal>
@@ -41,6 +42,10 @@ export default {
     methods: {
         ShowModal: function(e){
             this.showModal = true;
+            this.Task = toRaw(this.task_list.filter((t)=>{
+                return t.pk == e.target.id
+            })[0])
+            console.log(this.Task)
             this.itemID = e.target.id;
             console.log(e.target)
         },
@@ -60,17 +65,19 @@ export default {
     }
     .draggable-div{
         border-radius: 10px;
-        background-color: rgb(34, 144, 247);
+        background-color: #457b9d;
         margin: 3rem;
         width: calc(25% - 6rem);
         flex: 0 0 auto;
         height:0%;
+        box-shadow: 0 15px 30px 0 rgb(0 0 0 / 11%), 0 5px 15px 0 rgb(0 0 0 / 8%);
     }    
     .draggable-div h1{
         font-family: sans-serif;
         text-align: center;
         color:aliceblue;
-        border-bottom: 2px solid rgb(68, 68, 68);
+        border-bottom: 2px solid #1d3557;
+        padding-bottom: 3%;
     }
     .draggable{
         padding: 1rem;

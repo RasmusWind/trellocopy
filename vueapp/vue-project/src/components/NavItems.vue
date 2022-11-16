@@ -28,13 +28,13 @@ export default {
     }    
     .NavItems nav a:not(:first-child){
         padding-left: 1rem;
-        border-left: 2px solid rgb(68, 68, 68);
+        border-left: 2px solid #1d3557;
     }    
     .NavItems nav a:not(:last-child){
         padding-right: 1rem;
     }
     .NavItems nav a:hover{
-        color: orange;
+        color: #e63946;
     }
     
     .NavItems{

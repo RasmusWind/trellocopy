@@ -23,17 +23,22 @@ export default {
 </script>
 <style scoped>
     .ListItem-div{
-        width: 100%;
-        max-width: 300px;
-        background-color: orange;
+        width: calc(100% - 20px);
+        max-width: 280px;
+        background-color: #1d3557;
         border-radius: 5px;
-        height: 2rem;
+        height: auto;
         font-family: sans-serif;
         color: aliceblue;
         display: flex;
         justify-content: center;
         align-items: center;
         margin: 0 auto;
+        overflow-wrap: break-word;
+        padding: 10px;
+    }
+    .listItem-div:hover{
+      color: #e63946;
     }
     .ListItem-div:not(:last-child){
         margin-bottom: 1rem;

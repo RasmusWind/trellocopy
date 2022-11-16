@@ -1,9 +1,10 @@
 import $ from "jquery"
+import { webapi_url } from '../../main.js'
 
 function get_all_boards_data(){
     let result = undefined;
 
-    let url = "http://localhost:8000/geteverything/"
+    let url = `${webapi_url}geteverything/`
 
     $.ajax({
         type:"POST",

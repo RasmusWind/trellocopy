@@ -1,6 +1,7 @@
 <script setup>
 import TodoItem from './TodoItem.vue'
 import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 </script>
 
 <template>
@@ -9,26 +10,24 @@ import vSelect from 'vue-select'
       <div class="modal-wrapper" @click="$emit('close')">
         <div class="modal-container" @click.stop="">
             <a class="modal-exit" @click="$emit('close')">X</a>
-          <div>
-            <h1>Placeholder<!-- {{Name}} --></h1>
+            <div class="modal-header">
+              <div>
+            <h1>{{Task.fields.name}}</h1>
           </div>
           <div class="taskDescription-div">
-            Jeg elsker kage fordi det er nice og jeg elsker det fordi det er lækkert
+            {{Task.fields.description}}
           </div>
-
+            </div>
           <div class="modal-body">
             <div class="TodoList-div">
-                <TodoItem v-for="item in todos" :Name="item.name" :IsComplete="item.isComplete"/>
+                <TodoItem v-for="item in Task.fields.todos" :Name="item.fields.name" :IsComplete="item.fields.complete"/>
             </div>
             <div class="ToolsList-div">
               <div>
-                <p>Select a Team</p>
-                <v-select class="createrWorker-vSelect" @change="AddWorker" v-model="testString" :reduce="(option) => option.id" :options="test" />
+                <p>Select Team(s)</p>
+                <v-select class="createrWorker-vSelect" multiple @change="AddWorker" v-model="testString" :reduce="(option) => option.id" :options="test" />
             </div>
             </div>
-          </div>
-
-          <div class="modal-footer">
           </div>
         </div>
       </div>
@@ -41,7 +40,7 @@ import vSelect from 'vue-select'
 export default {
   props: {
     show: Boolean,
-    itemID: String,
+    Task: Object,
     testString: String
   },
   data(){
@@ -74,21 +73,27 @@ export default {
     AddWorker(){
       console.log(this)
     }
-  }
+  },
 }
 </script>
 
 <style>
     .TodoList-div{
-        background-color: rgb(34, 144, 247);
         width: 100%;
         height: 20rem;
         overflow: auto scroll;
+        border-right: 2px solid #1d3557;
     }
     .ToolsList-div{
-        background-color: #fff;
+        padding-left: 10px;
         width: 50%;
         height: 20rem;
+    }
+    .modal-header{
+      background-color: #457b9d;
+      margin-bottom: 1rem;
+      padding: 5px 0px;
+      border-radius: 10px;
     }
     .modal-mask {
         position: fixed;
@@ -109,37 +114,34 @@ export default {
     .taskDescription-div{
         width: 50%;
         padding-left: 2%;
+        padding-bottom: 2%;
     }
 
     .modal-container {
         font-family: sans-serif;
         width: 50%;
         margin: 0px auto;
-        padding: 20px 30px;
-        background-color: rgb(112, 112, 112);
+        padding: 20px;
+        background-color: #a8dadc;
         color: aliceblue;
-        border-radius: 5px;
+        border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
         transition: all 0.3s ease;
     }
     .modal-container h1{
-        border-bottom: 2px solid rgb(68, 68, 68);
+        border-bottom: 2px solid #1d3557;
         padding-left: 1%;
-    }
-
-    .modal-header h3 {
-        margin-top: 0;
-        background-color: rgb(34, 144, 247);
+        padding-bottom: 1rem;
     }
     .modal-footer{
         padding-bottom: 10px;
     }
-
     .modal-body {
-        margin: 20px 0;
         width: 100%;
         display: flex;
         flex-direction: row;
+        background-color: #457b9d;
+        border-radius: 10px;
     }
 
     .modal-exit {
@@ -167,4 +169,71 @@ export default {
         -webkit-transform: scale(1.1);
         transform: scale(1.1);
     }
+    :root {
+    --vs-colors--lightest: rgba(60, 60, 60, 0.26);
+    --vs-colors--light: rgba(60, 60, 60, 0.5);
+    --vs-colors--dark: #333;
+    --vs-colors--darkest: rgba(0, 0, 0, 0.15);
+
+    /* Search Input */
+    --vs-search-input-color: inherit;
+    --vs-search-input-bg: rgb(255, 255, 255);
+    --vs-search-input-placeholder-color: inherit;
+
+    /* Font */
+    --vs-font-size: 1rem;
+    --vs-line-height: 1.4;
+
+    /* Disabled State */
+    --vs-state-disabled-bg: rgb(248, 248, 248);
+    --vs-state-disabled-color: var(--vs-colors--light);
+    --vs-state-disabled-controls-color: var(--vs-colors--light);
+    --vs-state-disabled-cursor: not-allowed;
+
+    /* Borders */
+    --vs-border-color: var(--vs-colors--lightest);
+    --vs-border-width: 1px;
+    --vs-border-style: solid;
+    --vs-border-radius: 4px;
+
+    /* Actions: house the component controls */
+    --vs-actions-padding: 4px 6px 0 3px;
+
+    /* Component Controls: Clear, Open Indicator */
+    --vs-controls-color: var(--vs-colors--light);
+    --vs-controls-size: 1;
+    --vs-controls--deselect-text-shadow: 0 1px 0 #fff;
+
+    /* Selected */
+    --vs-selected-bg: #1d3557;
+    --vs-selected-color: aliceblue;
+    --vs-selected-border-color: var(--vs-border-color);
+    --vs-selected-border-style: var(--vs-border-style);
+    --vs-selected-border-width: var(--vs-border-width);
+
+    /* Dropdown */
+    --vs-dropdown-bg: #1d3557;
+    --vs-dropdown-color: inherit;
+    --vs-dropdown-z-index: 1000;
+    --vs-dropdown-min-width: 160px;
+    --vs-dropdown-max-height: 350px;
+    --vs-dropdown-box-shadow: 0px 3px 6px 0px var(--vs-colors--darkest);
+
+    /* Options */
+    --vs-dropdown-option-bg: #000;
+    --vs-dropdown-option-color: var(--vs-dropdown-color);
+    --vs-dropdown-option-padding: 3px 20px;
+
+    /* Active State */
+    --vs-dropdown-option--active-bg: #5897fb;
+    --vs-dropdown-option--active-color: #fff;
+
+    /* Deselect State */
+    --vs-dropdown-option--deselect-bg: #fb5858;
+    --vs-dropdown-option--deselect-color: #fff;
+
+    /* Transitions */
+    --vs-transition-timing-function: cubic-bezier(1, -0.115, 0.975, 0.855);
+    --vs-transition-duration: 150ms;
+}
 </style>
