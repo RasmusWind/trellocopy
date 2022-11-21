@@ -91,7 +91,7 @@ export default {
     }
     .modal-header{
       background-color: #457b9d;
-      margin-bottom: 1rem;
+      margin-bottom: 5px;
       padding: 5px 0px;
       border-radius: 10px;
     }
@@ -121,7 +121,7 @@ export default {
         font-family: sans-serif;
         width: 50%;
         margin: 0px auto;
-        padding: 20px;
+        padding: 5px;
         background-color: #a8dadc;
         color: aliceblue;
         border-radius: 10px;

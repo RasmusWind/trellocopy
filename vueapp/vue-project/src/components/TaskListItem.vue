@@ -37,8 +37,9 @@ export default {
         overflow-wrap: break-word;
         padding: 10px;
     }
-    .listItem-div:hover{
+    .ListItem-div:hover{
       color: #e63946;
+      cursor: pointer;
     }
     .ListItem-div:not(:last-child){
         margin-bottom: 1rem;
