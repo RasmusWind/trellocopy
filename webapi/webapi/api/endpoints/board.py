@@ -95,12 +95,12 @@ def get_all_boards(request):
         tasks = board.pre_tasks
         json_tasks = json.loads(ss("json", tasks))
 
-        json_board["fields"]["tasks"] = json_tasks
+        json_board["fields"]["tasks"] = sorted(json_tasks, key=lambda x: x["fields"]["position"])
 
         for task, json_task in zip(tasks, json_tasks):
             todos = task.pre_todos
             json_todos = json.loads(ss("json", todos))
 
-            json_task["fields"]["todos"] = json_todos
+            json_task["fields"]["todos"] = sorted(json_todos, key=lambda x: x["fields"]["position"])
     
     return Response(json_boards)

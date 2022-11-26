@@ -24,7 +24,7 @@ export default {
         flex-direction: row;
         align-items: center;
         box-shadow: 0 15px 30px 0 rgb(0 0 0 / 11%), 0 5px 15px 0 rgb(0 0 0 / 8%);
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         padding: 0px 1rem;
     }
     .navbar-h1{

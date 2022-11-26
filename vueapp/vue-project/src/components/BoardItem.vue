@@ -14,10 +14,7 @@ import {toRaw} from 'vue'
     </div>
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <modal :show="showModal" :Task="Task" @close="showModal = false">
-        <template #header>
-        </template>
-      </modal>
+      <modal :show="showModal" :Task="Task" :task_list="task_list" @close="showModal = false"/>
     </Teleport>
 </template>
 
@@ -66,7 +63,7 @@ export default {
     .draggable-div{
         border-radius: 10px;
         background-color: #457b9d;
-        margin: 3rem;
+        margin: 1rem 3rem 3rem 3rem;
         width: calc(25% - 6rem);
         flex: 0 0 auto;
         height:0%;

@@ -6,9 +6,11 @@ import $ from 'jquery'
 </script>
 
 <template>
+
     <div class="HomeBoardList-div">
         <BoardItem v-for="board in boarddata" v-bind:key="board" :board_name="board.fields.name" :task_list="board.fields.tasks"/>
     </div>  
+    
   </template>
 <script>
 import { VueDraggableNext } from "vue-draggable-next"
@@ -17,7 +19,9 @@ import post_boards from "../assets/js/post_delay.js"
 var post_timeout = null
 
 export default {
-    
+    props:{
+        boarddata: Array,
+    },
     components: {
         Modal,
         draggable: VueDraggableNext,
@@ -26,9 +30,9 @@ export default {
         return {
             showModal: false,
             drag: false,
-            boarddata:[
+            // boarddata:[
 
-            ],
+            // ],
         }
     },
     methods: {
@@ -39,9 +43,7 @@ export default {
         }
     },
     mounted: function(){
-        this.boarddata = get_all_boards_data()
         this.emitter.on("nielsevent", (msg)=>{
-            console.log(this.boarddata)
             // Call delayed post function here!
             post_timeout = post_boards(this.boarddata, post_timeout)
         })

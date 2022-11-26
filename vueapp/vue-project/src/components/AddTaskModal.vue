@@ -1,108 +1,96 @@
 <script setup>
-import TodoItem from './TodoItem.vue'
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css';
 </script>
 
 <template>
-  <Transition name="modal">
-    <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper" @click="$emit('close')">
-        <div class="modal-container" @click.stop="">
-            <a class="modal-exit" @click="$emit('close')">X</a>
-            <div class="modal-header">
-              <div>
-            <h1>{{Task.fields.name}}</h1>
-          </div>
-          <div class="taskDescription-div">
-            <button @click="deleteTask" style="background-color:red;">delete</button>
-            {{Task.fields.description}}
-          </div>
+    <Transition name="modal">
+        <div v-if="show" class="modal-mask">
+            <div class="modal-wrapper" @click="$emit('close')">
+                <div class="modal-container" @click.stop="">
+                    <a class="modal-exit" @click="$emit('close')">X</a>
+                    <div class="modal-header">
+                        <h1>Add Task</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content-div">
+                            <label for="nameinput">Name:</label>
+                            <input type="text" id="nameinput">
+                            <br>
+                            <label for="descriptioninput">Name:</label>
+                            <textarea cols="40" rows="5" id="descriptioninput"></textarea>
+                            <br>
+                            <label for="boardselect">Board:</label>
+                            <select name="boards" id="boardselect">
+                                <option v-for="board in boarddata" v-bind:key="board" :value="board.pk">{{board.fields.name}}</option>
+                            </select>
+                        </div>
+                        <div class="content-div">
+                            <button @click="submitdata">Submit</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          <div class="modal-body">
-            <div class="TodoList-div">
-                <TodoItem v-for="item in Task.fields.todos" :Name="item.fields.name" :IsComplete="item.fields.complete"/>
-            </div>
-            <div class="ToolsList-div">
-              <div>
-                <p>Select Team(s)</p>
-                <v-select class="createrWorker-vSelect" multiple @change="AddWorker" v-model="testString" :reduce="(option) => option.id" :options="test" />
-            </div>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </Transition>
+    </Transition>
 </template>
 
 <script >
+import $ from "jquery"
+import get_boards from "../assets/js/requests.js"
 import { webapi_url } from '../main.js'
-import $ from 'jquery'
-
 export default {
-
-  
-  props: {
-    show: Boolean,
-    task_list:Array,
-    Task: Object,
-    testString: String
-  },
-  data(){
-    return{
-      todos: [
-        {name: "Make coffee", isComplete: false},
-        {name: "Code css", isComplete: false},
-        {name: "Make design", isComplete: true},
-        {name: "Code backend", isComplete: true},
-        {name: "Go home", isComplete: false},
-        {name: "Talk games", isComplete: true},
-      ],
-      teams: [
-        {name: "Backend Developers", Workers: [
-          {firstName: "Lars"},
-          {firstName: "Jonas"},
-          {firstName: "Japa"},
-        ]}
-      ],
-      test: [
-        {label: "yep", id: 1},
-        {label: "nop", id: 2}
-      ]
-    }
-  },
-  components: {
-    vSelect
-  },
-  methods:{
-    AddWorker(){
-      console.log(this)
+    props: {
+        show: Boolean,
     },
-    deleteTask(){
-      let url = `${webapi_url}task-delete/${this.Task.pk}`
-      console.log(this.task_list)
-      $.ajax({
-        type:"delete",
-        url:url,
-        success:(response)=>{
-          this.task_list = this.task_list.filter(t=>{
-            return t.pk != this.Task.pk
-          })
-        }
+    data(){
+        return{
+            boarddata:[
 
-      })
-    }
-  },
+            ],
+        }
+    },
+     methods:{
+        submitdata:function(event){
+            let url = `${webapi_url}task-create/`
+            let data = {
+                name:$("#nameinput").val(),
+                description:$("#descriptioninput").val(),
+                board:$("#boardselect :selected").val(),
+            }
+
+            
+
+            $.ajax({
+                type:"POST",
+                url:url,
+                data: data,
+                success:(response)=>{
+                    let newtask = {
+                        "model": "base.task",
+                        "pk": response.id,
+                        "fields": {
+                            "name": response.name,
+                            "description": response.description,
+                            "board": response.board,
+                            "position": response.position,
+                            "complete": response.complete,
+                            "image": "",
+                            "todos": []
+                        }
+                    }
+                    this.emitter.emit("onNewTask", newtask)
+                }
+            })
+        }
+    },
+    mounted() {
+        this.boarddata = get_boards()
+    },
 }
 </script>
 
 <style scoped>
-    .TodoList-div{
-        width: 100%;
-        height: 20rem;
-        overflow: auto scroll;
-        border-right: 2px solid #1d3557;
+    .content-div{
+        padding:5px;
     }
     .ToolsList-div{
         padding-left: 10px;
