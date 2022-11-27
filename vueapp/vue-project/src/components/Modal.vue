@@ -21,7 +21,7 @@ import 'vue-select/dist/vue-select.css';
             </div>
           <div class="modal-body">
             <div class="TodoList-div">
-                <TodoItem v-for="item in Task.fields.todos" :Name="item.fields.name" :IsComplete="item.fields.complete"/>
+                <TodoItem v-for="item in Task.fields.todos" v-bind:key="item" :Name="item.fields.name" :IsComplete="item.fields.complete"/>
             </div>
             <div class="ToolsList-div">
               <div>
@@ -45,7 +45,6 @@ export default {
   
   props: {
     show: Boolean,
-    task_list:Array,
     Task: Object,
     testString: String
   },
@@ -81,14 +80,12 @@ export default {
     },
     deleteTask(){
       let url = `${webapi_url}task-delete/${this.Task.pk}`
-      console.log(this.task_list)
       $.ajax({
         type:"delete",
         url:url,
         success:(response)=>{
-          this.task_list = this.task_list.filter(t=>{
-            return t.pk != this.Task.pk
-          })
+          this.emitter.emit("onDeleteTask", this.Task)
+          this.emitter.emit("onCloseModal")
         }
 
       })

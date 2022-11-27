@@ -14,7 +14,6 @@ import $ from 'jquery'
   </template>
 <script>
 import { VueDraggableNext } from "vue-draggable-next"
-import get_all_boards_data from "../assets/js/geteverything.js"
 import post_boards from "../assets/js/post_delay.js"
 var post_timeout = null
 
@@ -30,16 +29,12 @@ export default {
         return {
             showModal: false,
             drag: false,
-            // boarddata:[
-
-            // ],
         }
     },
     methods: {
         ShowModal: function(e){
             this.showModal = true;
-            this.itemID = e.target.id;
-            console.log(e.target)
+            this.itemID = e.target.id;  
         }
     },
     mounted: function(){

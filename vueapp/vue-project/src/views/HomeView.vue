@@ -22,6 +22,14 @@ export default {
     },
     mounted: function(){
         this.boarddata = get_all_boards_data()
+        this.emitter.on("onDeleteTask", (deletedTask)=>{
+            let board = this.boarddata.filter(b=>{
+                return b.pk == deletedTask.fields.board
+            })[0]
+            board.fields.tasks = board.fields.tasks.filter(t=>{
+                return t.pk != deletedTask.pk
+            })
+        })
     },
 }
 </script>

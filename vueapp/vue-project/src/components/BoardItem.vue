@@ -14,7 +14,7 @@ import {toRaw} from 'vue'
     </div>
     <Teleport to="body">
       <!-- use the modal component, pass in the prop -->
-      <modal :show="showModal" :Task="Task" :task_list="task_list" @close="showModal = false"/>
+      <modal :show="showModal" :Task="Task" @close="showModal = false"/>
     </Teleport>
 </template>
 
@@ -28,8 +28,8 @@ export default {
     },
     data(){
         return {
-            task: this.task_list,
             showModal: false,
+            Task: {},
         }
     },
     components: {
@@ -42,14 +42,16 @@ export default {
             this.Task = toRaw(this.task_list.filter((t)=>{
                 return t.pk == e.target.id
             })[0])
-            console.log(this.Task)
             this.itemID = e.target.id;
-            console.log(e.target)
         },
         EndDragging: function(e){
             this.emitter.emit("nielsevent", "wallah")
-            console.log("STOPPED DRAGGING")
         }
+    },
+    mounted: function(){
+        this.emitter.on("onCloseModal", ()=>{
+            this.showModal = false
+        })
     },
 }
 </script>
