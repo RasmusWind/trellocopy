@@ -21,3 +21,11 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+  vue:
+    image: rasmusgraversen/trello_vue:latest
+    volumes:
+      - .:/vue_app
+    ports:
+      - "5173:8080"
+    depends_on:
+      - api
